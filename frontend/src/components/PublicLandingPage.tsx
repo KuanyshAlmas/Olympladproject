@@ -121,29 +121,29 @@ const PublicLandingPage = () => {
   }, []);
 
   return (
-    <main className="ad-page">
-      <nav className="ad-nav">
-        <a href="#top" className="ad-brand">
+    <main className="landing-page">
+      <nav className="landing-nav">
+        <a href="#top" className="landing-brand">
           <span>O</span>
           <strong>Olym<span>plad</span></strong>
         </a>
 
-        <div className="ad-nav-links">
+        <div className="landing-nav-links">
           <a href="#showcase">Бағдарлама</a>
           <a href="#courses">Курстар</a>
           <a href="#leaderboard">Рейтинг</a>
           <a href="#about">Жүйе туралы</a>
         </div>
 
-        <Link to="/login" className="ad-nav-cta">Тіркелу</Link>
+        <Link to="/login" className="landing-nav-cta">Тіркелу</Link>
       </nav>
 
-      <section id="top" className="ad-hero">
-        <div className="ad-hero-glow ad-hero-glow-left" />
-        <div className="ad-hero-glow ad-hero-glow-right" />
+      <section id="top" className="landing-hero">
+        <div className="landing-hero-glow landing-hero-glow-left" />
+        <div className="landing-hero-glow landing-hero-glow-right" />
 
-        <div className="ad-hero-copy">
-          <div className="ad-pill">
+        <div className="landing-hero-copy">
+          <div className="landing-pill">
             <span />
             <strong>2026 қабылдау ашық</strong>
             <em>5-11 сынып</em>
@@ -159,15 +159,15 @@ const PublicLandingPage = () => {
             Python, C++, Arduino, LEGO EV3, жарыс практикасы және жеке прогресс панелі.
           </p>
 
-          <div className="ad-hero-actions">
-            <a href="#courses" className="ad-primary-btn">
+          <div className="landing-hero-actions">
+            <a href="#courses" className="landing-primary-btn">
               Тегін сабаққа жазылу
               <ArrowRight size={18} />
             </a>
-            <a href="#showcase" className="ad-secondary-btn">Бағдарламаны көру</a>
+            <a href="#showcase" className="landing-secondary-btn">Бағдарламаны көру</a>
           </div>
 
-          <div className="ad-hero-mini-stats">
+          <div className="landing-hero-mini-stats">
             <article>
               <strong>5-11</strong>
               <span>сынып оқушылары</span>
@@ -183,26 +183,26 @@ const PublicLandingPage = () => {
           </div>
         </div>
 
-        <div className="ad-dashboard-wrap">
-          <div className="ad-floating-card ad-floating-rating">
+        <div className="landing-dashboard-wrap">
+          <div className="landing-floating-card landing-floating-rating">
             <span>Жарыс рейтингі</span>
             <strong>+320 ұпай</strong>
           </div>
-          <div className="ad-floating-card ad-floating-project">
+          <div className="landing-floating-card landing-floating-project">
             <span>Робот жобасы</span>
             <strong>Сызық қуалайтын робот дайын</strong>
           </div>
 
-          <div className="ad-dashboard-card">
-            <div className="ad-dashboard-head">
+          <div className="landing-dashboard-card">
+            <div className="landing-dashboard-head">
               <div>
                 <span>Оқушының жанды панелі</span>
                 <h3>Апталық нәтиже</h3>
               </div>
-              <div className="ad-dashboard-icon"><Bot size={30} /></div>
+              <div className="landing-dashboard-icon"><Bot size={30} /></div>
             </div>
 
-            <div className="ad-dashboard-metrics">
+            <div className="landing-dashboard-metrics">
               <article>
                 <span>Шешілген есептер</span>
                 <strong>48</strong>
@@ -213,22 +213,22 @@ const PublicLandingPage = () => {
               </article>
             </div>
 
-            <div className="ad-track-card">
+            <div className="landing-track-card">
               <div>
                 <strong>Алгоритм бағыты</strong>
                 <span>72%</span>
               </div>
-              <div className="ad-progress">
+              <div className="landing-progress">
                 <span style={{ width: '72%' }} />
               </div>
-              <div className="ad-track-tags">
+              <div className="landing-track-tags">
                 <span>Графтар</span>
                 <span>DP</span>
                 <span>Жадный әдіс</span>
               </div>
             </div>
 
-            <div className="ad-contest-card">
+            <div className="landing-contest-card">
               <span>Келесі жарыс</span>
               <div>
                 <strong>Сенбілік бағдарламалау жарысы</strong>
@@ -239,7 +239,7 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <section className="ad-banner">
+      <section className="landing-banner">
         <div>
           <span>Арнайы ұсыныс</span>
           <h2>Бірінші диагностикалық сабақ - тегін</h2>
@@ -247,7 +247,7 @@ const PublicLandingPage = () => {
         <a href="#courses">Орын брондау</a>
       </section>
 
-      <section className="ad-stats">
+      <section className="landing-stats">
         {stats.map((item) => (
           <article key={item.label}>
             <strong>{item.value}</strong>
@@ -256,8 +256,8 @@ const PublicLandingPage = () => {
         ))}
       </section>
 
-      <section id="showcase" className="ad-section ad-showcase">
-        <div className="ad-section-head">
+      <section id="showcase" className="landing-section landing-showcase">
+        <div className="landing-section-head">
           <span>Бағдарлама құрылымы</span>
           <h2>Оқушы деңгейіне қарай өсетін дайындық жүйесі</h2>
           <p>
@@ -266,7 +266,7 @@ const PublicLandingPage = () => {
           </p>
         </div>
 
-        <div className="ad-showcase-grid">
+        <div className="landing-showcase-grid">
           {showcases.map((item) => (
             <article key={item.title}>
               <span>{item.label}</span>
@@ -278,8 +278,8 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <section id="about" className="ad-section ad-marketing">
-        <div className="ad-marketing-card">
+      <section id="about" className="landing-section landing-marketing">
+        <div className="landing-marketing-card">
           <span>Жүйенің мақсаты</span>
           <h2>Нәтижені бірінші экраннан көрсететін сайт</h2>
           <p>
@@ -293,7 +293,7 @@ const PublicLandingPage = () => {
           </div>
         </div>
 
-        <div className="ad-audience-list">
+        <div className="landing-audience-list">
           <article>
             <Trophy size={26} />
             <div>
@@ -318,8 +318,8 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <section className="ad-section ad-benefits">
-        <div className="ad-benefits-copy">
+      <section className="landing-section landing-benefits">
+        <div className="landing-benefits-copy">
           <span>Неге оқушылар таңдайды</span>
           <h2>Нақты нәтиже көрсететін оқу жүйесі</h2>
           <p>
@@ -329,7 +329,7 @@ const PublicLandingPage = () => {
           <Link to="/login">Оқушыны тіркеу</Link>
         </div>
 
-        <div className="ad-benefits-grid">
+        <div className="landing-benefits-grid">
           {benefits.map((item) => {
             const Icon = item.icon;
             return (
@@ -343,8 +343,8 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <section id="courses" className="ad-section ad-courses">
-        <div className="ad-courses-head">
+      <section id="courses" className="landing-section landing-courses">
+        <div className="landing-courses-head">
           <div>
             <span>Курстар</span>
             <h2>Жүйелі оқу бағыттары</h2>
@@ -353,13 +353,13 @@ const PublicLandingPage = () => {
           <a href="#showcase">Бағыттарды көру</a>
         </div>
 
-        <div className="ad-course-grid">
+        <div className="landing-course-grid">
           {courses.map((course) => (
-            <article className={`ad-course-card ${course.tone}`} key={course.title}>
-              <div className="ad-course-line" />
+            <article className={`landing-course-card ${course.tone}`} key={course.title}>
+              <div className="landing-course-line" />
               <div>
                 <em>{course.badge}</em>
-                <div className="ad-course-meta">
+                <div className="landing-course-meta">
                   <span>{course.level}</span>
                   <small>{course.lessons} сабақ</small>
                 </div>
@@ -375,20 +375,20 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <section id="leaderboard" className="ad-section ad-leaderboard-section">
-        <div className="ad-section-head">
+      <section id="leaderboard" className="landing-section landing-leaderboard-section">
+        <div className="landing-section-head">
           <span>Олимпиадалық рейтинг</span>
           <h2>Жарыс нәтижесі бойынша үздік оқушылар</h2>
         </div>
 
-        <div className="ad-leaderboard">
-          <div className="ad-leaderboard-row ad-leaderboard-head">
+        <div className="landing-leaderboard">
+          <div className="landing-leaderboard-row landing-leaderboard-head">
             <span>Оқушы</span>
             <span>Ұпай</span>
             <span>Медаль</span>
           </div>
           {leaderboard.map((student) => (
-            <div className="ad-leaderboard-row" key={student.name}>
+            <div className="landing-leaderboard-row" key={student.name}>
               <strong>{student.name}</strong>
               <span>{student.score}</span>
               <em>{student.medal}</em>
@@ -397,7 +397,7 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <section className="ad-final-cta">
+      <section className="landing-final-cta">
         <div>
           <span>Соңғы әрекет</span>
           <h2>Оқушыңызға технологиялық болашаққа жол ашыңыз</h2>
@@ -405,13 +405,13 @@ const PublicLandingPage = () => {
             Алғашқы диагностикалық сабақ арқылы оқушының деңгейін анықтап,
             оған сәйкес олимпиадалық немесе робототехника бағытын ұсынамыз.
           </p>
-          <div className="ad-final-actions">
+          <div className="landing-final-actions">
             <a href="#courses">Тегін диагностика</a>
             <a href="#courses">WhatsApp арқылы жазу</a>
           </div>
         </div>
 
-        <div className="ad-final-grid">
+        <div className="landing-final-grid">
           <article><Trophy size={28} /><span>Олимпиадалық ойлау</span></article>
           <article><Bot size={28} /><span>Робототехника жобалары</span></article>
           <article><Code2 size={28} /><span>Бағдарламалау практикасы</span></article>
@@ -419,7 +419,7 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <footer className="ad-footer">
+      <footer className="landing-footer">
         <span>© 2026 Olymplad Academy</span>
         <div>
           <a href="#top">Telegram</a>
