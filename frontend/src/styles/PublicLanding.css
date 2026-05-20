@@ -1,6 +1,6 @@
 .ad-page {
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at top left, #dbeafe 0, #fff 32%, #f8fafc 100%);
   color: #0f172a;
