@@ -14,7 +14,6 @@ if PROJECT_ROOT not in sys.path:
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 
@@ -443,15 +442,19 @@ def create_rsvps_for_student(user, events, index):
         )
 
 
-@transaction.atomic
 def seed():
     rng = random.Random(20260519)
+    print('Resetting old demo data...', flush=True)
     reset_old_students()
+    print('Ensuring core accounts...', flush=True)
     ensure_core_accounts()
+    print('Creating events...', flush=True)
     events = create_events()
+    print('Creating students...', flush=True)
     students = create_students()
 
     for index, user in enumerate(students):
+        print(f'Seeding {index + 1}/{len(students)}: {user.username}', flush=True)
         create_skills_for_student(user, rng, index)
         create_tasks_for_student(user, rng, index)
         create_codeforces_for_student(user, rng, index)
