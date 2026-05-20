@@ -1,0 +1,1031 @@
+.ad-page {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, #dbeafe 0, #fff 32%, #f8fafc 100%);
+  color: #0f172a;
+}
+
+.ad-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.86);
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(18px);
+  padding: 1.1rem 2rem;
+}
+
+.ad-brand,
+.ad-nav-links,
+.ad-nav-cta,
+.ad-nav-links a,
+.ad-primary-btn,
+.ad-secondary-btn,
+.ad-banner a,
+.ad-benefits-copy a,
+.ad-courses-head a,
+.ad-course-card a,
+.ad-final-actions a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ad-brand {
+  gap: 0.75rem;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.ad-brand > span {
+  width: 40px;
+  height: 40px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 950;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+}
+
+.ad-brand strong {
+  font-size: 1.55rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.ad-brand strong span {
+  color: #2563eb;
+}
+
+.ad-nav-links {
+  gap: 2rem;
+}
+
+.ad-nav-links a {
+  color: #475569;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.ad-nav-links a:hover {
+  color: #2563eb;
+}
+
+.ad-nav-cta {
+  min-height: 46px;
+  border-radius: 16px;
+  background: #0f172a;
+  color: #fff;
+  font-weight: 850;
+  padding: 0 1.15rem;
+  text-decoration: none;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
+}
+
+.ad-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(420px, 0.9fr);
+  gap: 4rem;
+  align-items: center;
+  padding: 6rem 5rem 5rem;
+}
+
+.ad-hero-glow {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(52px);
+  pointer-events: none;
+}
+
+.ad-hero-glow-left {
+  top: 5rem;
+  left: 2rem;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(191, 219, 254, 0.58);
+}
+
+.ad-hero-glow-right {
+  right: 4rem;
+  bottom: 0;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(207, 250, 254, 0.72);
+}
+
+.ad-hero-copy,
+.ad-dashboard-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.ad-pill {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  background: #fff;
+  color: #1d4ed8;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  padding: 0.55rem 0.9rem;
+  font-weight: 850;
+  margin-bottom: 1.5rem;
+}
+
+.ad-pill span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #22c55e;
+}
+
+.ad-pill em {
+  border-left: 1px solid #cbd5e1;
+  color: #64748b;
+  font-style: normal;
+  padding-left: 0.6rem;
+}
+
+.ad-hero h1 {
+  max-width: 780px;
+  font-size: clamp(3rem, 6vw, 6.1rem);
+  font-weight: 950;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.ad-hero h1 span {
+  display: block;
+  color: transparent;
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6, #06b6d4);
+  background-clip: text;
+}
+
+.ad-hero-copy > p {
+  max-width: 700px;
+  color: #475569;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin-top: 1.9rem;
+}
+
+.ad-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.2rem;
+}
+
+.ad-primary-btn,
+.ad-secondary-btn {
+  min-height: 56px;
+  border-radius: 18px;
+  font-weight: 900;
+  text-decoration: none;
+  gap: 0.6rem;
+  padding: 0 1.55rem;
+}
+
+.ad-primary-btn {
+  background: #2563eb;
+  color: #fff;
+  box-shadow: 0 18px 36px rgba(37, 99, 235, 0.25);
+}
+
+.ad-secondary-btn {
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #0f172a;
+}
+
+.ad-hero-mini-stats {
+  max-width: 700px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 2.2rem;
+}
+
+.ad-hero-mini-stats article {
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  padding: 1rem;
+}
+
+.ad-hero-mini-stats strong {
+  display: block;
+  color: #2563eb;
+  font-size: 1.55rem;
+  font-weight: 950;
+}
+
+.ad-hero-mini-stats span {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.ad-dashboard-wrap {
+  width: 100%;
+  max-width: 580px;
+  justify-self: end;
+}
+
+.ad-floating-card {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+}
+
+.ad-floating-card span {
+  display: block;
+  color: #64748b;
+  font-size: 0.78rem;
+  margin-bottom: 0.25rem;
+}
+
+.ad-floating-card strong {
+  color: #2563eb;
+  font-size: 1.35rem;
+  font-weight: 950;
+}
+
+.ad-floating-rating {
+  top: -2rem;
+  left: -1.5rem;
+  transform: rotate(-4deg);
+}
+
+.ad-floating-project {
+  right: -1.25rem;
+  bottom: -2rem;
+  transform: rotate(3deg);
+  background: #0f172a;
+}
+
+.ad-floating-project strong {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.ad-floating-project span {
+  color: #cbd5e1;
+}
+
+.ad-dashboard-card {
+  position: relative;
+  border: 1px solid #e2e8f0;
+  border-radius: 36px;
+  background: #fff;
+  padding: 1.5rem;
+  box-shadow: 0 24px 52px rgba(191, 219, 254, 0.76);
+}
+
+.ad-dashboard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.ad-dashboard-head span,
+.ad-dashboard-metrics span,
+.ad-contest-card > span {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.ad-dashboard-head h3 {
+  margin-top: 0.25rem;
+  font-size: 1.55rem;
+  font-weight: 950;
+}
+
+.ad-dashboard-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.ad-dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ad-dashboard-metrics article {
+  border: 1px solid #dbeafe;
+  border-radius: 24px;
+  background: #eff6ff;
+  padding: 1.2rem;
+}
+
+.ad-dashboard-metrics article:last-child {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.ad-dashboard-metrics strong {
+  display: block;
+  color: #2563eb;
+  font-size: 2.5rem;
+  font-weight: 950;
+  margin-top: 0.25rem;
+}
+
+.ad-dashboard-metrics article:last-child strong {
+  color: #d97706;
+}
+
+.ad-track-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  background: #f8fafc;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.ad-track-card > div:first-child,
+.ad-contest-card div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ad-track-card > div:first-child span {
+  color: #2563eb;
+  font-weight: 900;
+}
+
+.ad-progress {
+  height: 12px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+  margin: 0.8rem 0 1rem;
+}
+
+.ad-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2563eb, #22d3ee);
+}
+
+.ad-track-tags {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.ad-track-tags span {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  padding: 0.55rem 0.4rem;
+}
+
+.ad-contest-card {
+  border-radius: 24px;
+  background: #0f172a;
+  color: #fff;
+  padding: 1.2rem;
+}
+
+.ad-contest-card em {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-style: normal;
+  padding: 0.35rem 0.75rem;
+}
+
+.ad-banner,
+.ad-stats,
+.ad-section,
+.ad-final-cta,
+.ad-footer {
+  width: min(1180px, calc(100% - 2rem));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ad-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-radius: 34px;
+  background: #0f172a;
+  color: #fff;
+  box-shadow: 0 22px 42px rgba(15, 23, 42, 0.12);
+  padding: 1.6rem 2rem;
+  margin-bottom: 3rem;
+}
+
+.ad-banner span,
+.ad-marketing-card > span,
+.ad-final-cta > div > span {
+  display: block;
+  color: #93c5fd;
+  font-weight: 850;
+  margin-bottom: 0.35rem;
+}
+
+.ad-banner h2 {
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.ad-banner a {
+  min-height: 52px;
+  border-radius: 16px;
+  background: #fff;
+  color: #0f172a;
+  font-weight: 950;
+  text-decoration: none;
+  padding: 0 1.25rem;
+}
+
+.ad-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 5rem;
+}
+
+.ad-stats article {
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.ad-stats strong {
+  display: block;
+  color: #2563eb;
+  font-size: 2rem;
+  font-weight: 950;
+  margin-bottom: 0.3rem;
+}
+
+.ad-stats span {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.ad-section {
+  padding: 5rem 0;
+}
+
+.ad-showcase {
+  width: 100%;
+  background: #f8fafc;
+  padding-left: max(1rem, calc((100% - 1180px) / 2));
+  padding-right: max(1rem, calc((100% - 1180px) / 2));
+}
+
+.ad-section-head {
+  max-width: 780px;
+  margin-bottom: 3rem;
+}
+
+.ad-section-head > span,
+.ad-benefits-copy > span,
+.ad-courses-head span {
+  display: block;
+  color: #2563eb;
+  font-weight: 900;
+  margin-bottom: 0.75rem;
+}
+
+.ad-section-head h2,
+.ad-marketing-card h2,
+.ad-benefits-copy h2,
+.ad-courses-head h2,
+.ad-final-cta h2 {
+  font-size: clamp(2.3rem, 4vw, 3.3rem);
+  line-height: 1.08;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+}
+
+.ad-section-head p,
+.ad-benefits-copy p,
+.ad-courses-head p,
+.ad-final-cta p {
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-top: 1rem;
+}
+
+.ad-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.ad-showcase-grid article,
+.ad-audience-list article,
+.ad-benefits-grid article,
+.ad-course-card,
+.ad-leaderboard {
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.ad-showcase-grid article {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  padding: 2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ad-showcase-grid article::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7rem;
+  height: 7rem;
+  border-bottom-left-radius: 4rem;
+  background: #eff6ff;
+}
+
+.ad-showcase-grid article:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.ad-showcase-grid article > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ad-showcase-grid span {
+  color: #2563eb;
+  font-size: 0.86rem;
+  font-weight: 950;
+}
+
+.ad-showcase-grid h3 {
+  font-size: 1.9rem;
+  font-weight: 950;
+  margin: 1rem 0;
+}
+
+.ad-showcase-grid p,
+.ad-benefits-grid p,
+.ad-course-card p,
+.ad-audience-list p {
+  color: #475569;
+  line-height: 1.65;
+}
+
+.ad-showcase-grid em {
+  width: fit-content;
+  display: inline-flex;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-style: normal;
+  font-weight: 750;
+  margin-top: 1.25rem;
+  padding: 0.5rem 0.85rem;
+}
+
+.ad-marketing,
+.ad-benefits {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.9fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.ad-marketing-card {
+  border-radius: 38px;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  color: #fff;
+  box-shadow: 0 24px 52px rgba(37, 99, 235, 0.18);
+  padding: 2.5rem;
+}
+
+.ad-marketing-card p {
+  color: #dbeafe;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-top: 1.4rem;
+}
+
+.ad-marketing-card > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.ad-marketing-card > div span {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.14);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 800;
+  padding: 0.85rem;
+}
+
+.ad-audience-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.ad-audience-list article {
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.ad-audience-list svg,
+.ad-benefits-grid svg {
+  color: #2563eb;
+}
+
+.ad-audience-list h3,
+.ad-benefits-grid h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.ad-benefits-copy a,
+.ad-courses-head a {
+  width: fit-content;
+  min-height: 52px;
+  border-radius: 16px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 900;
+  text-decoration: none;
+  margin-top: 1.6rem;
+  padding: 0 1.25rem;
+}
+
+.ad-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ad-benefits-grid article {
+  border-radius: 26px;
+  padding: 1.5rem;
+}
+
+.ad-benefits-grid h3 {
+  margin-top: 1rem;
+}
+
+.ad-courses-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.ad-courses-head a {
+  flex: 0 0 auto;
+  background: #0f172a;
+  margin-top: 0;
+}
+
+.ad-course-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.ad-course-card {
+  border-radius: 28px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ad-course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.ad-course-line {
+  height: 8px;
+  background: linear-gradient(90deg, #2563eb, #22d3ee);
+}
+
+.ad-course-card.amber .ad-course-line {
+  background: linear-gradient(90deg, #f97316, #fbbf24);
+}
+
+.ad-course-card.violet .ad-course-line {
+  background: linear-gradient(90deg, #7c3aed, #d946ef);
+}
+
+.ad-course-card > div:last-child {
+  padding: 1.8rem;
+}
+
+.ad-course-card em {
+  display: inline-flex;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 900;
+  margin-bottom: 1.2rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.ad-course-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.ad-course-meta span {
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.84rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.ad-course-meta small {
+  color: #94a3b8;
+}
+
+.ad-course-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.ad-course-card a {
+  min-height: 44px;
+  border-radius: 14px;
+  background: #f1f5f9;
+  color: #0f172a;
+  justify-content: center;
+  font-weight: 850;
+  text-decoration: none;
+  margin-top: 1.5rem;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.ad-course-card a:hover {
+  background: #2563eb;
+  color: #fff;
+}
+
+.ad-leaderboard-section {
+  width: 100%;
+  background: #f8fafc;
+  padding-left: max(1rem, calc((100% - 1180px) / 2));
+  padding-right: max(1rem, calc((100% - 1180px) / 2));
+}
+
+.ad-leaderboard {
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.ad-leaderboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1.25rem 2rem;
+}
+
+.ad-leaderboard-row:last-child {
+  border-bottom: 0;
+}
+
+.ad-leaderboard-head {
+  color: #64748b;
+  font-weight: 900;
+}
+
+.ad-leaderboard-row strong {
+  font-weight: 900;
+}
+
+.ad-leaderboard-row span:not(:first-child) {
+  color: #2563eb;
+  font-weight: 850;
+}
+
+.ad-leaderboard-row em {
+  color: #64748b;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.ad-final-cta {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.75fr);
+  gap: 2rem;
+  align-items: center;
+  border-radius: 42px;
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.38), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.22), transparent 34%),
+    #0f172a;
+  color: #fff;
+  box-shadow: 0 24px 52px rgba(15, 23, 42, 0.18);
+  padding: 3rem;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+}
+
+.ad-final-cta p {
+  color: #cbd5e1;
+}
+
+.ad-final-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.ad-final-actions a {
+  min-height: 52px;
+  border-radius: 16px;
+  font-weight: 950;
+  text-decoration: none;
+  padding: 0 1.25rem;
+}
+
+.ad-final-actions a:first-child {
+  background: #fff;
+  color: #0f172a;
+}
+
+.ad-final-actions a:last-child {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.ad-final-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ad-final-grid article {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.25rem;
+}
+
+.ad-final-grid svg {
+  color: #93c5fd;
+}
+
+.ad-final-grid span {
+  font-weight: 900;
+}
+
+.ad-footer {
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #64748b;
+  padding: 2rem 0;
+}
+
+.ad-footer div {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.ad-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 1080px) {
+  .ad-hero,
+  .ad-marketing,
+  .ad-benefits,
+  .ad-final-cta {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-dashboard-wrap {
+    justify-self: start;
+  }
+
+  .ad-nav-links {
+    display: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .ad-hero,
+  .ad-nav {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .ad-hero {
+    padding-top: 4rem;
+  }
+
+  .ad-hero-mini-stats,
+  .ad-stats,
+  .ad-showcase-grid,
+  .ad-course-grid,
+  .ad-benefits-grid,
+  .ad-marketing-card > div {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-banner,
+  .ad-courses-head,
+  .ad-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ad-dashboard-wrap {
+    max-width: 100%;
+  }
+
+  .ad-floating-card {
+    display: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .ad-brand strong {
+    font-size: 1.2rem;
+  }
+
+  .ad-nav-cta {
+    min-height: 40px;
+    padding: 0 0.85rem;
+  }
+
+  .ad-dashboard-metrics,
+  .ad-final-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-hero h1 {
+    font-size: 3rem;
+  }
+
+  .ad-leaderboard-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}
