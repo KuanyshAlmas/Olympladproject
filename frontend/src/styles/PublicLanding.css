@@ -172,9 +172,19 @@
 
 .ad-hero h1 span {
   display: block;
-  color: transparent;
+  color: #2563eb;
   background: linear-gradient(90deg, #1d4ed8, #3b82f6, #06b6d4);
+  -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .ad-hero h1 span {
+    background: none;
+    color: #2563eb;
+    -webkit-text-fill-color: currentColor;
+  }
 }
 
 .ad-hero-copy > p {
@@ -243,6 +253,8 @@
 }
 
 .ad-dashboard-wrap {
+  display: grid;
+  gap: 1rem;
   width: 100%;
   max-width: 580px;
   justify-self: end;
@@ -1030,7 +1042,20 @@
   }
 
   .ad-floating-card {
-    display: none;
+    position: static;
+    display: grid;
+    transform: none;
+    width: 100%;
+    border-radius: 18px;
+    padding: 0.95rem 1rem;
+  }
+
+  .ad-floating-rating {
+    order: -2;
+  }
+
+  .ad-floating-project {
+    order: -1;
   }
 }
 
@@ -1045,8 +1070,8 @@
   }
 
   .ad-nav-links {
-    overflow-x: auto;
-    flex-wrap: nowrap;
+    overflow: visible;
+    flex-wrap: wrap;
     padding-bottom: 0.2rem;
   }
 
