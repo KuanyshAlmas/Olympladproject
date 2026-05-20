@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -102,6 +103,15 @@ const leaderboard = [
 ];
 
 const PublicLandingPage = () => {
+  useEffect(() => {
+    const landingHashes = new Set(['#top', '#showcase', '#courses', '#leaderboard', '#about']);
+
+    if (landingHashes.has(window.location.hash)) {
+      window.history.replaceState(null, '', window.location.pathname || '/');
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+  }, []);
+
   return (
     <main className="ad-page">
       <nav className="ad-nav">

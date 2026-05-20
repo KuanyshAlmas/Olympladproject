@@ -508,6 +508,14 @@
   padding: 5rem 0;
 }
 
+.ad-hero,
+.ad-showcase,
+.ad-marketing,
+.ad-courses,
+.ad-leaderboard-section {
+  scroll-margin-top: 110px;
+}
+
 .ad-showcase {
   width: 100%;
   background: #f8fafc;
