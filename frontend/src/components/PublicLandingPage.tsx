@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -96,15 +96,75 @@ const results = [
   'Python, C++, Arduino, EV3',
 ];
 
-const leaderboard = [
-  { name: 'Аружан', score: 2450, medal: 'Алтын' },
-  { name: 'Диас', score: 2320, medal: 'Күміс' },
-  { name: 'Нұрсұлтан', score: 2190, medal: 'Қола' },
+type DiagnosticDirection = 'informatics' | 'robotics' | 'both';
+
+type DiagnosticOption = {
+  label: string;
+  score: number;
+  direction: DiagnosticDirection;
+};
+
+type DiagnosticQuestion = {
+  id: string;
+  title: string;
+  options: DiagnosticOption[];
+};
+
+const diagnosticQuestions: DiagnosticQuestion[] = [
+  {
+    id: 'experience',
+    title: 'Бағдарламалау немесе робототехникамен бұрын айналыстың ба?',
+    options: [
+      { label: 'Жоқ, енді бастаймын', score: 1, direction: 'both' },
+      { label: 'Scratch немесе Python көрдім', score: 2, direction: 'informatics' },
+      { label: 'Arduino, LEGO немесе датчикпен жұмыс істедім', score: 2, direction: 'robotics' },
+    ],
+  },
+  {
+    id: 'interest',
+    title: 'Қай тапсырма көбірек қызықтырады?',
+    options: [
+      { label: 'Логикалық есептер шығару', score: 3, direction: 'informatics' },
+      { label: 'Робот құрастырып, қозғалысын басқару', score: 3, direction: 'robotics' },
+      { label: 'Екеуін де байқап көру', score: 2, direction: 'both' },
+    ],
+  },
+  {
+    id: 'logic',
+    title: 'Есеп қиын болса не істейсің?',
+    options: [
+      { label: 'Мұғалімнің көмегін күтемін', score: 1, direction: 'both' },
+      { label: 'Ұқсас мысалды іздеп, қайталап көремін', score: 2, direction: 'informatics' },
+      { label: 'Бірнеше әдіс жасап, нәтижесін тексеремін', score: 3, direction: 'both' },
+    ],
+  },
+  {
+    id: 'coding',
+    title: 'Код жазу деңгейің қандай?',
+    options: [
+      { label: 'Айнымалы, шарт, циклді әлі үйрену керек', score: 1, direction: 'informatics' },
+      { label: 'Қарапайым Python/C++ есептерін шығара аламын', score: 2, direction: 'informatics' },
+      { label: 'Функция, массив, алгоритм тақырыптарын білемін', score: 3, direction: 'informatics' },
+    ],
+  },
+  {
+    id: 'project',
+    title: 'Жоба жасағанда қай рөл саған жақын?',
+    options: [
+      { label: 'Идея ойлап, схема құру', score: 2, direction: 'robotics' },
+      { label: 'Код жазып, қатені табу', score: 3, direction: 'informatics' },
+      { label: 'Командамен бірге толық нәтиже шығару', score: 3, direction: 'both' },
+    ],
+  },
 ];
 
+const whatsappUrl = 'https://wa.me/77089590836?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%2C%20Olymplad%20%D1%82%D0%B5%D0%B3%D1%96%D0%BD%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%D2%93%D0%B0%20%D0%B6%D0%B0%D0%B7%D1%8B%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96.';
+
 const PublicLandingPage = () => {
+  const [diagnosticAnswers, setDiagnosticAnswers] = useState<Record<string, string>>({});
+
   useEffect(() => {
-    const landingHashes = new Set(['#top', '#showcase', '#courses', '#leaderboard', '#about']);
+    const landingHashes = new Set(['#top', '#showcase', '#courses', '#about', '#diagnostic']);
     const previousScrollRestoration = window.history.scrollRestoration;
 
     window.history.scrollRestoration = 'manual';
@@ -120,6 +180,31 @@ const PublicLandingPage = () => {
     };
   }, []);
 
+  const selectedDiagnosticOptions = diagnosticQuestions.flatMap((question) => {
+    const answer = diagnosticAnswers[question.id];
+    const option = question.options.find((item) => item.label === answer);
+    return option ? [option] : [];
+  });
+  const diagnosticScore = selectedDiagnosticOptions.reduce((sum, option) => sum + option.score, 0);
+  const diagnosticComplete = selectedDiagnosticOptions.length === diagnosticQuestions.length;
+  const informaticsAnswers = selectedDiagnosticOptions.filter((option) => option.direction === 'informatics').length;
+  const roboticsAnswers = selectedDiagnosticOptions.filter((option) => option.direction === 'robotics').length;
+  const diagnosticDirection = roboticsAnswers > informaticsAnswers
+    ? 'Робототехника бағыты'
+    : informaticsAnswers > roboticsAnswers
+      ? 'Информатика және алгоритм бағыты'
+      : 'Аралас технология бағыты';
+  const diagnosticLevel = diagnosticScore <= 7
+    ? 'Бастапқы деңгей'
+    : diagnosticScore <= 11
+      ? 'Орта деңгей'
+      : 'Олимпиадалық дайындық деңгейі';
+  const diagnosticAdvice = diagnosticScore <= 7
+    ? 'Негізгі логика, Python/Scratch және қарапайым робот тапсырмаларынан бастаған дұрыс.'
+    : diagnosticScore <= 11
+      ? 'Апталық практика, Python/C++ негіздері және шағын жобалар арқылы жылдам өсуге болады.'
+      : 'Күрделі алгоритмдер, Codeforces практикасы және жарыс форматына дайындық ұсынуға болады.';
+
   return (
     <main className="landing-page">
       <nav className="landing-nav">
@@ -131,7 +216,6 @@ const PublicLandingPage = () => {
         <div className="landing-nav-links">
           <a href="#showcase">Бағдарлама</a>
           <a href="#courses">Курстар</a>
-          <a href="#leaderboard">Рейтинг</a>
           <a href="#about">Жүйе туралы</a>
         </div>
 
@@ -160,7 +244,7 @@ const PublicLandingPage = () => {
           </p>
 
           <div className="landing-hero-actions">
-            <a href="#courses" className="landing-primary-btn">
+            <a href="#diagnostic" className="landing-primary-btn">
               Тегін сабаққа жазылу
               <ArrowRight size={18} />
             </a>
@@ -244,7 +328,7 @@ const PublicLandingPage = () => {
           <span>Арнайы ұсыныс</span>
           <h2>Бірінші диагностикалық сабақ - тегін</h2>
         </div>
-        <a href="#courses">Орын брондау</a>
+        <a href="#diagnostic">Орын брондау</a>
       </section>
 
       <section className="landing-stats">
@@ -375,25 +459,80 @@ const PublicLandingPage = () => {
         </div>
       </section>
 
-      <section id="leaderboard" className="landing-section landing-leaderboard-section">
-        <div className="landing-section-head">
-          <span>Олимпиадалық рейтинг</span>
-          <h2>Жарыс нәтижесі бойынша үздік оқушылар</h2>
+      <section id="diagnostic" className="landing-section landing-diagnostic">
+        <div className="landing-diagnostic-head">
+          <div>
+            <span>Тегін диагностика</span>
+            <h2>Оқушы деңгейін 5 сұрақпен анықтау</h2>
+            <p>
+              Жауаптарға қарай бастапқы бағыт, оқу деңгейі және алғашқы ұсыныс бірден шығады.
+            </p>
+          </div>
+          <strong>{selectedDiagnosticOptions.length}/{diagnosticQuestions.length}</strong>
         </div>
 
-        <div className="landing-leaderboard">
-          <div className="landing-leaderboard-row landing-leaderboard-head">
-            <span>Оқушы</span>
-            <span>Ұпай</span>
-            <span>Медаль</span>
+        <div className="landing-diagnostic-grid">
+          <div className="landing-question-list">
+            {diagnosticQuestions.map((question, index) => (
+              <article key={question.id} className="landing-question-card">
+                <div className="landing-question-title">
+                  <span>{index + 1}</span>
+                  <h3>{question.title}</h3>
+                </div>
+                <div className="landing-answer-options">
+                  {question.options.map((option) => {
+                    const selected = diagnosticAnswers[question.id] === option.label;
+                    return (
+                      <button
+                        type="button"
+                        className={selected ? 'selected' : ''}
+                        key={option.label}
+                        onClick={() => setDiagnosticAnswers((current) => ({
+                          ...current,
+                          [question.id]: option.label,
+                        }))}
+                      >
+                        {option.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </article>
+            ))}
           </div>
-          {leaderboard.map((student) => (
-            <div className="landing-leaderboard-row" key={student.name}>
-              <strong>{student.name}</strong>
-              <span>{student.score}</span>
-              <em>{student.medal}</em>
+
+          <aside className="landing-diagnostic-result">
+            <span>Нәтиже</span>
+            <h3>{diagnosticComplete ? diagnosticLevel : 'Сұрақтарға жауап беріңіз'}</h3>
+            <p>{diagnosticComplete ? diagnosticAdvice : 'Барлық жауап белгіленген соң бағыт пен деңгей автоматты түрде көрсетіледі.'}</p>
+
+            <div className="landing-result-metrics">
+              <article>
+                <strong>{diagnosticScore}</strong>
+                <span>ұпай</span>
+              </article>
+              <article>
+                <strong>{diagnosticComplete ? diagnosticDirection : '-'}</strong>
+                <span>ұсынылатын бағыт</span>
+              </article>
             </div>
-          ))}
+
+            {diagnosticComplete && (
+              <div className="landing-selected-answers">
+                {diagnosticQuestions.map((question) => (
+                  <span key={question.id}>
+                    <CheckCircle2 size={15} />
+                    {diagnosticAnswers[question.id]}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div className="landing-result-actions">
+              <a href={whatsappUrl} target="_blank" rel="noreferrer">WhatsApp: +7 708 959 0836</a>
+              <button type="button" onClick={() => setDiagnosticAnswers({})}>Қайта тапсыру</button>
+            </div>
+          </aside>
         </div>
       </section>
 
@@ -406,8 +545,8 @@ const PublicLandingPage = () => {
             оған сәйкес олимпиадалық немесе робототехника бағытын ұсынамыз.
           </p>
           <div className="landing-final-actions">
-            <a href="#courses">Тегін диагностика</a>
-            <a href="#courses">WhatsApp арқылы жазу</a>
+            <a href="#diagnostic">Тегін диагностика</a>
+            <a href={whatsappUrl} target="_blank" rel="noreferrer">WhatsApp арқылы жазу</a>
           </div>
         </div>
 
@@ -421,11 +560,6 @@ const PublicLandingPage = () => {
 
       <footer className="landing-footer">
         <span>© 2026 Olymplad Academy</span>
-        <div>
-          <a href="#top">Telegram</a>
-          <a href="#top">YouTube</a>
-          <a href="#top">Instagram</a>
-        </div>
       </footer>
     </main>
   );
