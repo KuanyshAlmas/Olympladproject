@@ -25,7 +25,7 @@ const Layout: React.FC<LayoutProps> = ({ user, onLogout, children }) => {
           </div>
         </div>
         <nav className="nav-links">
-          <NavLink to="/" className="nav-link">
+          <NavLink to="/dashboard" className="nav-link">
             <LayoutDashboard size={20} /> Басқару
           </NavLink>
           <NavLink to="/kanban" className="nav-link">

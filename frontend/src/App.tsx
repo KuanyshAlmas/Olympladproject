@@ -78,11 +78,15 @@ function App() {
           />
           <Route 
             path="/login" 
-            element={user ? <Navigate to="/" /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} 
+            element={user ? <Navigate to="/dashboard" /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} 
           />
           <Route 
             path="/" 
-            element={user ? <Layout user={user} onLogout={handleLogout}><Dashboard user={user} /></Layout> : <PublicLandingPage />} 
+            element={<PublicLandingPage />} 
+          />
+          <Route
+            path="/dashboard"
+            element={user ? <Layout user={user} onLogout={handleLogout}><Dashboard user={user} /></Layout> : <Navigate to="/login" />}
           />
           <Route 
             path="/kanban" 

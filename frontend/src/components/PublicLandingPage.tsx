@@ -142,10 +142,10 @@ const PublicLandingPage = () => {
           </p>
 
           <div className="ad-hero-actions">
-            <Link to="/programs" className="ad-primary-btn">
+            <a href="#courses" className="ad-primary-btn">
               Тегін сабаққа жазылу
               <ArrowRight size={18} />
-            </Link>
+            </a>
             <a href="#showcase" className="ad-secondary-btn">Бағдарламаны көру</a>
           </div>
 
@@ -226,7 +226,7 @@ const PublicLandingPage = () => {
           <span>Арнайы ұсыныс</span>
           <h2>Бірінші диагностикалық сабақ - тегін</h2>
         </div>
-        <Link to="/programs">Орын брондау</Link>
+        <a href="#courses">Орын брондау</a>
       </section>
 
       <section className="ad-stats">
@@ -308,7 +308,7 @@ const PublicLandingPage = () => {
             Бұл блок жарнамаға жақсы жұмыс істейді: сайт бірден қандай нәтиже беретінін,
             қалай оқытатынын және неге сенуге болатынын көрсетеді.
           </p>
-          <Link to="/programs">Оқушыны тіркеу</Link>
+          <Link to="/login">Оқушыны тіркеу</Link>
         </div>
 
         <div className="ad-benefits-grid">
@@ -332,7 +332,7 @@ const PublicLandingPage = () => {
             <h2>Жүйелі оқу бағыттары</h2>
             <p>Тәжірибе, жобалар және прогресс бақылауы бар олимпиадалық дайындық бағыттары.</p>
           </div>
-          <Link to="/programs">Барлық курстар</Link>
+          <a href="#showcase">Бағыттарды көру</a>
         </div>
 
         <div className="ad-course-grid">
@@ -350,7 +350,7 @@ const PublicLandingPage = () => {
                   Жарыстар, қысқа тесттер, бағдарламалау есептері және робототехника
                   симуляциялары бар интерактивті оқу жүйесі.
                 </p>
-                <Link to="/programs">Курсты көру</Link>
+                <Link to="/login">Курсты көру</Link>
               </div>
             </article>
           ))}
@@ -388,7 +388,7 @@ const PublicLandingPage = () => {
             оған сәйкес олимпиадалық немесе робототехника бағытын ұсынамыз.
           </p>
           <div className="ad-final-actions">
-            <Link to="/programs">Тегін диагностика</Link>
+            <a href="#courses">Тегін диагностика</a>
             <a href="#courses">WhatsApp арқылы жазу</a>
           </div>
         </div>

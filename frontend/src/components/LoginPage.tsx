@@ -72,11 +72,11 @@ const LoginPage: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     <div className="login-container">
       <div className="login-shell">
         <nav className="login-nav">
-          <Link to="/welcome" className="login-brand">
+          <Link to="/" className="login-brand">
             <div className="login-brand-mark">O</div>
             <span>Olymplad</span>
           </Link>
-          <Link to="/welcome" className="login-showcase-link">
+          <Link to="/" className="login-showcase-link">
             Басты бет
             <ArrowRight size={16} />
           </Link>
