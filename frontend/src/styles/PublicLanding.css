@@ -11,6 +11,7 @@
   top: 0;
   z-index: 50;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -64,13 +65,18 @@
 }
 
 .ad-nav-links {
-  gap: 2rem;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+  gap: 0.6rem 1.4rem;
+  flex-wrap: wrap;
 }
 
 .ad-nav-links a {
   color: #475569;
   font-weight: 700;
   text-decoration: none;
+  white-space: nowrap;
   transition: color 0.18s ease;
 }
 
@@ -964,8 +970,23 @@
     justify-self: start;
   }
 
+  .ad-nav {
+    align-items: flex-start;
+  }
+
   .ad-nav-links {
-    display: none;
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  .ad-nav-links a {
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
   }
 }
 
@@ -1013,6 +1034,12 @@
   .ad-nav-cta {
     min-height: 40px;
     padding: 0 0.85rem;
+  }
+
+  .ad-nav-links {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.2rem;
   }
 
   .ad-dashboard-metrics,
