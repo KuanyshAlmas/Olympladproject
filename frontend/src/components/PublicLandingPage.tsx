@@ -105,11 +105,19 @@ const leaderboard = [
 const PublicLandingPage = () => {
   useEffect(() => {
     const landingHashes = new Set(['#top', '#showcase', '#courses', '#leaderboard', '#about']);
+    const previousScrollRestoration = window.history.scrollRestoration;
+
+    window.history.scrollRestoration = 'manual';
 
     if (landingHashes.has(window.location.hash)) {
       window.history.replaceState(null, '', window.location.pathname || '/');
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
   }, []);
 
   return (
