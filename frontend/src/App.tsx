@@ -18,6 +18,7 @@ import ReportsPage from './components/ReportsPage';
 import CodeforcesPage from './components/CodeforcesPage';
 import RoadmapPage from './components/RoadmapPage';
 import ProgramsPage from './components/ProgramsPage';
+import AssistantPage from './components/AssistantPage';
 
 const queryClient = new QueryClient();
 
@@ -123,6 +124,10 @@ function App() {
           <Route
             path="/roadmap"
             element={user ? <Layout user={user} onLogout={handleLogout}><RoadmapPage user={user} /></Layout> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/assistant"
+            element={user ? <Layout user={user} onLogout={handleLogout}><AssistantPage user={user} /></Layout> : <Navigate to="/login" />}
           />
           <Route 
             path="/events" 

@@ -158,7 +158,7 @@ const diagnosticQuestions: DiagnosticQuestion[] = [
   },
 ];
 
-const whatsappUrl = 'https://wa.me/77089590836?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%2C%20Olymplad%20%D1%82%D0%B5%D0%B3%D1%96%D0%BD%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%D2%93%D0%B0%20%D0%B6%D0%B0%D0%B7%D1%8B%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96.';
+const whatsappUrl = 'https://wa.me/77089590836?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%2C%20QyranCode%20%D1%82%D0%B5%D0%B3%D1%96%D0%BD%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%D2%93%D0%B0%20%D0%B6%D0%B0%D0%B7%D1%8B%D0%BB%D2%93%D1%8B%D0%BC%20%D0%BA%D0%B5%D0%BB%D0%B5%D0%B4%D1%96.';
 
 const PublicLandingPage = () => {
   const [diagnosticAnswers, setDiagnosticAnswers] = useState<Record<string, string>>({});
@@ -209,8 +209,8 @@ const PublicLandingPage = () => {
     <main className="landing-page">
       <nav className="landing-nav">
         <a href="#top" className="landing-brand">
-          <span>O</span>
-          <strong>Olym<span>plad</span></strong>
+          <span>Q</span>
+          <strong>Qyran<span>Code</span></strong>
         </a>
 
         <div className="landing-nav-links">
@@ -559,7 +559,7 @@ const PublicLandingPage = () => {
       </section>
 
       <footer className="landing-footer">
-        <span>© 2026 Olymplad Academy</span>
+        <span>© 2026 QyranCode Academy</span>
       </footer>
     </main>
   );

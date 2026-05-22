@@ -1,7 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Columns2, Zap, Calendar, LogOut, Trophy, UsersRound, ClipboardList, Code2, Map, BookOpenCheck } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Columns2, Zap, Calendar, LogOut, Trophy, UsersRound, ClipboardList, Code2, Map, BookOpenCheck, BotMessageSquare } from 'lucide-react';
 import type { User } from '../types';
+import FloatingAssistant from './FloatingAssistant';
 import '../styles/Layout.css';
 
 interface LayoutProps {
@@ -11,6 +12,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ user, onLogout, children }) => {
+  const location = useLocation();
   const factionLabel = user.faction === 'informatics' ? 'Информатика' : user.faction === 'robotics' ? 'Робототехника' : 'Барлық бағыт';
   const roleLabel = user.role === 'superuser' ? 'Бас мұғалім' : user.role === 'leader' ? 'Топ жетекшісі' : 'Оқушы';
 
@@ -18,9 +20,9 @@ const Layout: React.FC<LayoutProps> = ({ user, onLogout, children }) => {
     <div className="layout">
       <aside className="sidebar">
         <div className="brand-lockup">
-          <div className="brand-mark">O</div>
+          <div className="brand-mark">Q</div>
           <div>
-            <h1>Olymplad</h1>
+            <h1>QyranCode</h1>
             <span>Командалық жүйе</span>
           </div>
         </div>
@@ -52,6 +54,9 @@ const Layout: React.FC<LayoutProps> = ({ user, onLogout, children }) => {
           <NavLink to="/roadmap" className="nav-link">
             <Map size={20} /> Жол картасы
           </NavLink>
+          <NavLink to="/assistant" className="nav-link">
+            <BotMessageSquare size={20} /> ИИ ассистент
+          </NavLink>
           <NavLink to="/events" className="nav-link">
             <Calendar size={20} /> Іс-шаралар
           </NavLink>
@@ -78,6 +83,7 @@ const Layout: React.FC<LayoutProps> = ({ user, onLogout, children }) => {
         </header>
         {children}
       </main>
+      {location.pathname !== '/assistant' && <FloatingAssistant user={user} />}
     </div>
   );
 };

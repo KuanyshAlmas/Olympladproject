@@ -102,7 +102,7 @@ const Dashboard = ({ user }: DashboardProps) => {
       <section className="workspace-hero">
         <div>
           <p className="eyebrow">Жанды басқару панелі</p>
-          <h2>{user.faction === 'none' ? 'Olymplad CRM' : factionLabels[user.faction]}</h2>
+          <h2>{user.faction === 'none' ? 'QyranCode CRM' : factionLabels[user.faction]}</h2>
           <p className="hero-copy">
             Рөлдік модель, Kanban, Pomodoro, дағдылар матрицасы және хабарландырулар бір басқару орталығында.
           </p>

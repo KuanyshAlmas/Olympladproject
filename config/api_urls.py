@@ -21,6 +21,7 @@ from codeforces.views import (
     CodeforcesProblemStatementView,
     CodeforcesSolutionViewSet,
 )
+from assistant.views import AssistantThreadViewSet, StudentAssistantThreadListView
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -36,6 +37,7 @@ router.register(r'duels', DuelViewSet, basename='duel')
 router.register(r'events', EventViewSet, basename='event')
 router.register(r'rsvps', RSVPViewSet, basename='rsvp')
 router.register(r'codeforces-solutions', CodeforcesSolutionViewSet, basename='codeforces-solution')
+router.register(r'assistant/threads', AssistantThreadViewSet, basename='assistant-thread')
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -53,6 +55,7 @@ urlpatterns = [
     ),
     path('codeforces/problems/', CodeforcesProblemListView.as_view(), name='codeforces_problems'),
     path('codeforces/run/', CodeforcesRunCodeView.as_view(), name='codeforces_run_code'),
+    path('assistant/student-threads/', StudentAssistantThreadListView.as_view(), name='assistant_student_threads'),
     path(
         'codeforces/problems/<int:contest_id>/<str:index>/statement/',
         CodeforcesProblemStatementView.as_view(),

@@ -40,8 +40,8 @@ const LoginPage: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       <div className="login-shell">
         <nav className="login-nav">
           <Link to="/" className="login-brand">
-            <div className="login-brand-mark">O</div>
-            <span>Olymplad</span>
+            <div className="login-brand-mark">Q</div>
+            <span>QyranCode</span>
           </Link>
           <Link to="/" className="login-showcase-link">
             Басты бет

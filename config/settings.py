@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'gamification',
     'events',
     'codeforces',
+    'assistant',
 ]
 
 MIDDLEWARE = [

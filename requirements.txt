@@ -8,3 +8,4 @@ daphne==4.2.1
 psycopg2-binary==2.9.12
 Pillow==11.3.0
 whitenoise==6.11.0
+google-genai==2.5.0

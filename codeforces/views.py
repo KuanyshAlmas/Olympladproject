@@ -257,7 +257,7 @@ def fetch_codeforces_problemset(tags=''):
 
     request = urllib.request.Request(
         url,
-        headers={'User-Agent': 'Olymplad-CRM/1.0'}
+        headers={'User-Agent': 'QyranCode-CRM/1.0'}
     )
 
     with urllib.request.urlopen(request, timeout=8) as response:
@@ -369,7 +369,7 @@ def fetch_codeforces_statement(contest_id, index):
     request = urllib.request.Request(
         url,
         headers={
-            'User-Agent': 'Olymplad-CRM/1.0',
+            'User-Agent': 'QyranCode-CRM/1.0',
             'Accept-Language': 'ru-RU,ru;q=0.9,en;q=0.7',
         },
     )
@@ -572,7 +572,7 @@ class CodeforcesRunCodeView(APIView):
 
         started_at = time.monotonic()
         try:
-            with tempfile.TemporaryDirectory(prefix='olymplad_code_') as temp_dir:
+            with tempfile.TemporaryDirectory(prefix='qyrancode_code_') as temp_dir:
                 return Response(self.execute_code(runner_language, code, stdin_text, temp_dir, started_at))
         except subprocess.TimeoutExpired as exc:
             return Response({

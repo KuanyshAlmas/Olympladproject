@@ -218,6 +218,25 @@ export type CodeforcesSolution = {
   updated_at: string;
 };
 
+export type AssistantMessage = {
+  id: number;
+  thread: number;
+  role: 'user' | 'assistant';
+  content: string;
+  created_at: string;
+};
+
+export type AssistantThread = {
+  id: number;
+  owner: number;
+  owner_details?: User;
+  title: string;
+  latest_message: AssistantMessage | null;
+  messages_count: number;
+  created_at: string;
+  updated_at: string;
+};
+
 export type StudentProfileStats = {
   tasks_total: number;
   tasks_done: number;
