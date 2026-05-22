@@ -186,8 +186,7 @@ a {
   .profile-focus-card,
   .profile-solution-card,
   .roadmap-topic-meta span,
-  .roadmap-tags span,
-  .demo-login-btn
+  .roadmap-tags span
 ) {
   border-color: var(--border);
   background: var(--surface-soft);

@@ -8,33 +8,6 @@ interface LoginProps {
   onLoginSuccess: (token: string) => void;
 }
 
-const demoAccounts = [
-  {
-    label: 'Әкімші',
-    description: 'Барлық құқық',
-    username: 'admin',
-    password: 'adminpass',
-  },
-  {
-    label: 'Топ жетекші',
-    description: 'Информатика',
-    username: 'leader_info',
-    password: 'leaderpass',
-  },
-  {
-    label: 'Оқушы',
-    description: 'Информатика',
-    username: 'alibek.saken',
-    password: 'studentpass',
-  },
-  {
-    label: 'Оқушы',
-    description: 'Робототехника',
-    username: 'adil.samat',
-    password: 'studentpass',
-  },
-];
-
 const LoginPage: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -60,12 +33,6 @@ const LoginPage: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await loginWithCredentials(username, password);
-  };
-
-  const handleDemoLogin = async (nextUsername: string, nextPassword: string) => {
-    setUsername(nextUsername);
-    setPassword(nextPassword);
-    await loginWithCredentials(nextUsername, nextPassword);
   };
 
   return (
@@ -180,27 +147,6 @@ const LoginPage: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               </button>
             </form>
 
-            <div className="demo-login-panel">
-              <div className="demo-login-heading">
-                <span>Тез кіру</span>
-                <small>уақытша</small>
-              </div>
-              <div className="demo-login-grid">
-                {demoAccounts.map((account) => (
-                  <button
-                    key={`${account.username}-${account.description}`}
-                    type="button"
-                    className="demo-login-btn"
-                    onClick={() => handleDemoLogin(account.username, account.password)}
-                    disabled={submitting}
-                  >
-                    <strong>{account.label}</strong>
-                    <span>{account.description}</span>
-                    <code>{account.username}</code>
-                  </button>
-                ))}
-              </div>
-            </div>
           </section>
         </main>
       </div>
