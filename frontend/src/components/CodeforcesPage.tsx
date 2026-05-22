@@ -32,6 +32,11 @@ const statementSourceLabels: Record<CodeforcesStatementResponse['source'], strin
   demo: 'Демо',
   unavailable: 'Қолжетімсіз',
 };
+const runnerPhaseLabels: Record<CodeRunResult['phase'], string> = {
+  compile: 'компиляция',
+  run: 'іске қосу',
+  system: 'жүйе',
+};
 
 type CodeforcesPageProps = {
   user: User;
@@ -432,7 +437,7 @@ const CodeforcesPage = ({ user }: CodeforcesPageProps) => {
                         <small className={runnerResult.ok ? 'success' : 'error'}>
                           {runnerResult.timed_out
                             ? 'уақыт шегі'
-                            : `${runnerResult.phase === 'compile' ? 'компиляция' : 'іске қосу'} · шығу коды ${runnerResult.exit_code ?? '-'}`}
+                            : `${runnerPhaseLabels[runnerResult.phase]} · шығу коды ${runnerResult.exit_code ?? '-'}`}
                           {' · '}
                           {runnerResult.duration_ms} мс
                         </small>
@@ -446,6 +451,8 @@ const CodeforcesPage = ({ user }: CodeforcesPageProps) => {
                           runnerResult.stderr && `Қате:\n${runnerResult.stderr}`,
                           !runnerResult.compile_output && !runnerResult.stdout && !runnerResult.stderr && 'Нәтиже жоқ.',
                         ].filter(Boolean).join('\n\n')
+                        : runCodeMutation.isError
+                          ? `Қате:\n${runCodeMutation.error.message}`
                         : 'Кодты өз кіріс деректеріңізбен тексеру үшін "Іске қосу" батырмасын басыңыз.'}
                     </pre>
                   </div>

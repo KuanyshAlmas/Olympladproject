@@ -352,6 +352,13 @@ def run_process(command, stdin_text='', cwd=None, timeout=RUN_TIMEOUT_SECONDS):
     )
 
 
+def missing_tool_message(tool_name):
+    return (
+        f'{tool_name} компиляторы серверде табылмады. '
+        'Әкімшіге Docker image ішіне компилятор орнату керек.'
+    )
+
+
 def fetch_codeforces_statement(contest_id, index):
     cache_key = f'codeforces:statement:{contest_id}:{index}'
     cached = cache.get(cache_key)
@@ -594,6 +601,16 @@ class CodeforcesRunCodeView(APIView):
         compile_output = ''
 
         if runner_language in {'cpp17', 'cpp20'}:
+            if not shutil.which('g++'):
+                return self.build_result(
+                    ok=False,
+                    phase='system',
+                    exit_code=None,
+                    stdout='',
+                    stderr=missing_tool_message('g++'),
+                    compile_output='',
+                    started_at=started_at,
+                )
             source_path = f'{temp_dir}/main.cpp'
             binary_path = f'{temp_dir}/main'
             os.makedirs(f'{temp_dir}/bits', exist_ok=True)
@@ -625,9 +642,29 @@ class CodeforcesRunCodeView(APIView):
             with open(source_path, 'w', encoding='utf-8') as source_file:
                 source_file.write(code)
             interpreter = shutil.which('pypy3') if runner_language == 'pypy' else None
+            if runner_language == 'pypy' and not interpreter:
+                return self.build_result(
+                    ok=False,
+                    phase='system',
+                    exit_code=None,
+                    stdout='',
+                    stderr=missing_tool_message('pypy3'),
+                    compile_output='',
+                    started_at=started_at,
+                )
             command = [interpreter or sys.executable, source_path]
 
         else:
+            if not shutil.which('javac') or not shutil.which('java'):
+                return self.build_result(
+                    ok=False,
+                    phase='system',
+                    exit_code=None,
+                    stdout='',
+                    stderr=missing_tool_message('Java 17'),
+                    compile_output='',
+                    started_at=started_at,
+                )
             source_path = f'{temp_dir}/Main.java'
             with open(source_path, 'w', encoding='utf-8') as source_file:
                 source_file.write(code)
