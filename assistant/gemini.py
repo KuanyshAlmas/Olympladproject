@@ -1,4 +1,5 @@
 import os
+import time
 
 from django.conf import settings
 
@@ -7,6 +8,15 @@ from .models import AssistantMessage
 
 class GeminiAssistantError(Exception):
     pass
+
+
+TRANSIENT_ERROR_MARKERS = (
+    '503',
+    'UNAVAILABLE',
+    'high demand',
+    'overloaded',
+    'temporarily unavailable',
+)
 
 
 SYSTEM_PROMPT = """
@@ -24,6 +34,24 @@ Codeforces - есептер, шарт, код жазу және іске қос�
 Егер сұрақ түсініксіз болса, қысқа нақтылау сұра.
 Жауапты қысқа, пайдалы, достық стильде бер. Дайын үй жұмысын толық көшіріп бермей, түсіндіру мен бағыт беруге басымдық бер.
 """
+
+
+def get_model_candidates():
+    primary_model = os.environ.get('GEMINI_MODEL', getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash'))
+    fallback_models = os.environ.get('GEMINI_FALLBACK_MODELS', 'gemini-2.5-flash-lite,gemini-2.0-flash')
+    models = [primary_model]
+    models.extend(model.strip() for model in fallback_models.split(',') if model.strip())
+
+    unique_models = []
+    for model in models:
+        if model not in unique_models:
+            unique_models.append(model)
+    return unique_models
+
+
+def is_transient_gemini_error(exc):
+    message = str(exc)
+    return any(marker.lower() in message.lower() for marker in TRANSIENT_ERROR_MARKERS)
 
 
 def build_contents(thread):
@@ -61,26 +89,44 @@ def generate_assistant_reply(thread):
     except ImportError as exc:
         raise GeminiAssistantError('Gemini SDK орнатылмаған. requirements.txt ішіндегі google-genai dependency керек.') from exc
 
-    model = os.environ.get('GEMINI_MODEL', getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash'))
     client = genai.Client(api_key=api_key)
     try:
-        response = client.models.generate_content(
-            model=model,
-            contents=build_contents(thread),
-            config=types.GenerateContentConfig(
-                system_instruction=SYSTEM_PROMPT.strip(),
-                temperature=0.35,
-                max_output_tokens=900,
-            ),
+        contents = build_contents(thread)
+        config = types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT.strip(),
+            temperature=0.35,
+            max_output_tokens=900,
         )
-        text = (getattr(response, 'text', '') or '').strip()
-        if not text:
-            raise GeminiAssistantError('Gemini бос жауап қайтарды. Кейінірек қайталап көріңіз.')
-        return text
+
+        last_transient_error = None
+        for model in get_model_candidates():
+            for attempt in range(2):
+                try:
+                    response = client.models.generate_content(
+                        model=model,
+                        contents=contents,
+                        config=config,
+                    )
+                    text = (getattr(response, 'text', '') or '').strip()
+                    if not text:
+                        raise GeminiAssistantError('Gemini бос жауап қайтарды. Кейінірек қайталап көріңіз.')
+                    return text
+                except GeminiAssistantError:
+                    raise
+                except Exception as exc:
+                    if not is_transient_gemini_error(exc):
+                        raise GeminiAssistantError('Gemini жауап бере алмады. API key, quota немесе model атауын тексеріңіз.') from exc
+                    last_transient_error = exc
+                    if attempt == 0:
+                        time.sleep(0.7)
+
+        raise GeminiAssistantError(
+            'Gemini қазір көп сұранысқа байланысты жауап бере алмай тұр. Бірнеше минуттан кейін қайта көріңіз.'
+        ) from last_transient_error
     except GeminiAssistantError:
         raise
     except Exception as exc:
-        raise GeminiAssistantError(f'Gemini жауап бере алмады: {exc}') from exc
+        raise GeminiAssistantError('Gemini жауап бере алмады. Кейінірек қайта көріңіз.') from exc
     finally:
         close = getattr(client, 'close', None)
         if close:

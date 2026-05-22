@@ -97,8 +97,8 @@ const FloatingAssistant = ({ user }: FloatingAssistantProps) => {
               <X size={18} />
             </button>
           </header>
-          {error && <div className="assistant-error compact">{error}</div>}
           <div className="floating-assistant-messages">
+            {error && <div className="assistant-error compact">{error}</div>}
             {loading ? (
               <div className="assistant-empty">Жүктелуде...</div>
             ) : messages.map((message) => (

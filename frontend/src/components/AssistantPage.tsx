@@ -231,9 +231,8 @@ const AssistantPage = ({ user }: AssistantPageProps) => {
             {!activeIsOwn && activeThread && <span className="assistant-readonly">Тек көру</span>}
           </header>
 
-          {error && <div className="assistant-error">{error}</div>}
-
           <div className="assistant-messages">
+            {error && <div className="assistant-error">{error}</div>}
             {!activeThread ? (
               <div className="assistant-start-state">
                 <BotMessageSquare size={38} />
