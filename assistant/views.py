@@ -97,8 +97,13 @@ class AssistantThreadViewSet(
         try:
             reply_text = generate_assistant_reply(thread)
         except GeminiAssistantError as exc:
-            user_message.delete()
-            return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            return Response(
+                {
+                    'detail': str(exc),
+                    'user_message': AssistantMessageSerializer(user_message).data,
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
 
         assistant_message = AssistantMessage.objects.create(
             thread=thread,

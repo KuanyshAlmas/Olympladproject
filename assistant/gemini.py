@@ -33,6 +33,7 @@ Codeforces - есептер, шарт, код жазу және іске қос�
 Жол картасы - тақырыптарды кезеңмен оқу.
 Егер сұрақ түсініксіз болса, қысқа нақтылау сұра.
 Жауапты қысқа, пайдалы, достық стильде бер. Дайын үй жұмысын толық көшіріп бермей, түсіндіру мен бағыт беруге басымдық бер.
+Жауапты жарты жолда үзбе: ойды толық аяқтап, соңында келесі нақты қадамды айт.
 """
 
 
@@ -95,7 +96,7 @@ def generate_assistant_reply(thread):
         config = types.GenerateContentConfig(
             system_instruction=SYSTEM_PROMPT.strip(),
             temperature=0.35,
-            max_output_tokens=900,
+            max_output_tokens=1800,
         )
 
         last_transient_error = None

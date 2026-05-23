@@ -15,11 +15,25 @@ type AssistantReply = {
   assistant_message: AssistantMessage;
 };
 
+type AssistantErrorPayload = {
+  detail?: string;
+  user_message?: AssistantMessage;
+};
+
+type LocalAssistantMessage = AssistantMessage & {
+  pending?: boolean;
+};
+
 const canReviewStudentChats = (user: User) => user.role === 'superuser' || user.role === 'leader';
 
 const getErrorDetail = (err: unknown) => {
-  const error = err as AxiosError<{ detail?: string }>;
+  const error = err as AxiosError<AssistantErrorPayload>;
   return error.response?.data?.detail;
+};
+
+const getErrorUserMessage = (err: unknown) => {
+  const error = err as AxiosError<AssistantErrorPayload>;
+  return error.response?.data?.user_message;
 };
 
 const formatTime = (value: string) => new Date(value).toLocaleString('kk-KZ', {
@@ -33,7 +47,7 @@ const AssistantPage = ({ user }: AssistantPageProps) => {
   const [threads, setThreads] = useState<AssistantThread[]>([]);
   const [studentThreads, setStudentThreads] = useState<AssistantThread[]>([]);
   const [activeThread, setActiveThread] = useState<AssistantThread | null>(null);
-  const [messages, setMessages] = useState<AssistantMessage[]>([]);
+  const [messages, setMessages] = useState<LocalAssistantMessage[]>([]);
   const [input, setInput] = useState('');
   const [loadingThreads, setLoadingThreads] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
@@ -120,15 +134,42 @@ const AssistantPage = ({ user }: AssistantPageProps) => {
     if (!activeThread || !activeIsOwn || !input.trim()) return;
 
     const content = input.trim();
+    const now = new Date().toISOString();
+    const tempUserMessage: LocalAssistantMessage = {
+      id: -Date.now(),
+      thread: activeThread.id,
+      role: 'user',
+      content,
+      created_at: now,
+      pending: true,
+    };
+    const tempAssistantMessage: LocalAssistantMessage = {
+      id: tempUserMessage.id - 1,
+      thread: activeThread.id,
+      role: 'assistant',
+      content: 'Gemini ойланып жатыр...',
+      created_at: now,
+      pending: true,
+    };
+
     setInput('');
     setSending(true);
     setError('');
+    setMessages((current) => [...current, tempUserMessage, tempAssistantMessage]);
     try {
       const res = await client.post<AssistantReply>(`/assistant/threads/${activeThread.id}/messages/`, { content });
-      setMessages((current) => [...current, res.data.user_message, res.data.assistant_message]);
+      setMessages((current) => [
+        ...current.filter((message) => message.id !== tempUserMessage.id && message.id !== tempAssistantMessage.id),
+        res.data.user_message,
+        res.data.assistant_message,
+      ]);
       await loadThreads(activeThread.id);
     } catch (err: unknown) {
-      setInput(content);
+      const savedUserMessage = getErrorUserMessage(err);
+      setMessages((current) => [
+        ...current.filter((message) => message.id !== tempUserMessage.id && message.id !== tempAssistantMessage.id),
+        savedUserMessage || tempUserMessage,
+      ]);
       setError(getErrorDetail(err) || 'Gemini жауап бере алмады.');
     } finally {
       setSending(false);
@@ -243,7 +284,7 @@ const AssistantPage = ({ user }: AssistantPageProps) => {
             ) : loadingMessages ? (
               <div className="assistant-empty">Хабарламалар жүктелуде...</div>
             ) : messages.map((message) => (
-              <article className={`assistant-message ${message.role}`} key={message.id}>
+              <article className={`assistant-message ${message.role} ${message.pending ? 'pending' : ''}`} key={message.id}>
                 <div className="assistant-message-icon">
                   {message.role === 'assistant' ? <BotMessageSquare size={17} /> : <UserRound size={17} />}
                 </div>

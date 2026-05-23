@@ -15,15 +15,29 @@ type AssistantReply = {
   assistant_message: AssistantMessage;
 };
 
+type AssistantErrorPayload = {
+  detail?: string;
+  user_message?: AssistantMessage;
+};
+
+type LocalAssistantMessage = AssistantMessage & {
+  pending?: boolean;
+};
+
 const getErrorDetail = (err: unknown) => {
-  const error = err as AxiosError<{ detail?: string }>;
+  const error = err as AxiosError<AssistantErrorPayload>;
   return error.response?.data?.detail;
+};
+
+const getErrorUserMessage = (err: unknown) => {
+  const error = err as AxiosError<AssistantErrorPayload>;
+  return error.response?.data?.user_message;
 };
 
 const FloatingAssistant = ({ user }: FloatingAssistantProps) => {
   const [open, setOpen] = useState(false);
   const [thread, setThread] = useState<AssistantThread | null>(null);
-  const [messages, setMessages] = useState<AssistantMessage[]>([]);
+  const [messages, setMessages] = useState<LocalAssistantMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
@@ -70,14 +84,41 @@ const FloatingAssistant = ({ user }: FloatingAssistantProps) => {
     if (!thread || !input.trim()) return;
 
     const content = input.trim();
+    const now = new Date().toISOString();
+    const tempUserMessage: LocalAssistantMessage = {
+      id: -Date.now(),
+      thread: thread.id,
+      role: 'user',
+      content,
+      created_at: now,
+      pending: true,
+    };
+    const tempAssistantMessage: LocalAssistantMessage = {
+      id: tempUserMessage.id - 1,
+      thread: thread.id,
+      role: 'assistant',
+      content: 'Gemini ойланып жатыр...',
+      created_at: now,
+      pending: true,
+    };
+
     setInput('');
     setSending(true);
     setError('');
+    setMessages((current) => [...current, tempUserMessage, tempAssistantMessage]);
     try {
       const res = await client.post<AssistantReply>(`/assistant/threads/${thread.id}/messages/`, { content });
-      setMessages((current) => [...current, res.data.user_message, res.data.assistant_message]);
+      setMessages((current) => [
+        ...current.filter((message) => message.id !== tempUserMessage.id && message.id !== tempAssistantMessage.id),
+        res.data.user_message,
+        res.data.assistant_message,
+      ]);
     } catch (err: unknown) {
-      setInput(content);
+      const savedUserMessage = getErrorUserMessage(err);
+      setMessages((current) => [
+        ...current.filter((message) => message.id !== tempUserMessage.id && message.id !== tempAssistantMessage.id),
+        savedUserMessage || tempUserMessage,
+      ]);
       setError(getErrorDetail(err) || 'Gemini жауап бере алмады.');
     } finally {
       setSending(false);
@@ -102,7 +143,7 @@ const FloatingAssistant = ({ user }: FloatingAssistantProps) => {
             {loading ? (
               <div className="assistant-empty">Жүктелуде...</div>
             ) : messages.map((message) => (
-              <article className={`floating-message ${message.role}`} key={message.id}>
+              <article className={`floating-message ${message.role} ${message.pending ? 'pending' : ''}`} key={message.id}>
                 {message.content}
               </article>
             ))}

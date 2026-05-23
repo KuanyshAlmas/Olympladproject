@@ -243,6 +243,22 @@
   overflow-wrap: anywhere;
 }
 
+.assistant-message.pending > div:last-child,
+.floating-message.pending {
+  color: var(--muted);
+  background: #f8fafc;
+  border-style: dashed;
+  animation: assistant-pulse 1.25s ease-in-out infinite;
+}
+
+.assistant-message.user.pending > div:last-child,
+.floating-message.user.pending {
+  color: #fff;
+  background: var(--blue);
+  border-style: solid;
+  opacity: 0.82;
+}
+
 .assistant-message p {
   white-space: pre-wrap;
   line-height: 1.5;
@@ -419,6 +435,17 @@
   border-color: var(--blue);
   background: var(--blue);
   color: #fff;
+}
+
+@keyframes assistant-pulse {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .floating-assistant-form {
