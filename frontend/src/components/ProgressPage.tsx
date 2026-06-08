@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Award, BarChart3, Brain, Medal, ShieldCheck, Trophy } from 'lucide-react';
+import { Award, BarChart3, Brain, Medal, Search, ShieldCheck, Trophy } from 'lucide-react';
 import client from '../api/client';
 import type { Faction, Skill, User, UserSkill } from '../types';
 import '../styles/Progress.css';
@@ -8,6 +8,8 @@ import '../styles/Progress.css';
 type ProgressPageProps = {
   user: User;
 };
+
+type LeagueFilter = 'all' | 'gold' | 'silver' | 'bronze';
 
 const factionLabels: Record<Faction, string> = {
   informatics: 'Информатика',
@@ -27,7 +29,22 @@ const getLeague = (points: number) => {
   return 'Қола лига';
 };
 
+const getLeagueId = (points: number): Exclude<LeagueFilter, 'all'> => {
+  if (points >= 700) return 'gold';
+  if (points >= 350) return 'silver';
+  return 'bronze';
+};
+
+const getDisplayName = (member: User) => {
+  const fullName = `${member.first_name ?? ''} ${member.last_name ?? ''}`.trim();
+  return fullName || member.username;
+};
+
 const ProgressPage = ({ user }: ProgressPageProps) => {
+  const [factionFilter, setFactionFilter] = useState<Faction | 'all'>('all');
+  const [leagueFilter, setLeagueFilter] = useState<LeagueFilter>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
   const { data: users = [] } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -78,7 +95,24 @@ const ProgressPage = ({ user }: ProgressPageProps) => {
     ? visibleUsers.filter((member) => member.id === user.id)
     : visibleUsers;
 
-  const leaderboard = [...visibleUsers].sort((a, b) => b.focus_points - a.focus_points);
+  const leaderboard = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+
+    return visibleUsers
+      .filter((member) => factionFilter === 'all' || member.faction === factionFilter)
+      .filter((member) => leagueFilter === 'all' || getLeagueId(member.focus_points) === leagueFilter)
+      .filter((member) => {
+        if (!normalizedQuery) return true;
+        const searchableText = [
+          member.username,
+          member.first_name,
+          member.last_name,
+          getDisplayName(member),
+        ].join(' ').toLowerCase();
+        return searchableText.includes(normalizedQuery);
+      })
+      .sort((a, b) => b.focus_points - a.focus_points);
+  }, [factionFilter, leagueFilter, searchQuery, visibleUsers]);
   const maxFactionScore = Math.max(factionScores.informatics, factionScores.robotics, 1);
 
   const getSkillLevel = (memberId: number, skillId: number) => {
@@ -135,17 +169,56 @@ const ProgressPage = ({ user }: ProgressPageProps) => {
             </div>
             <Medal size={22} />
           </div>
+          <div className="ranking-filters">
+            <label>
+              Бағыт
+              <select
+                value={factionFilter}
+                onChange={(event) => setFactionFilter(event.target.value as Faction | 'all')}
+              >
+                <option value="all">Барлығы</option>
+                <option value="informatics">Информатика</option>
+                <option value="robotics">Робототехника</option>
+              </select>
+            </label>
+            <label>
+              Лига
+              <select
+                value={leagueFilter}
+                onChange={(event) => setLeagueFilter(event.target.value as LeagueFilter)}
+              >
+                <option value="all">Барлығы</option>
+                <option value="gold">Алтын</option>
+                <option value="silver">Күміс</option>
+                <option value="bronze">Қола</option>
+              </select>
+            </label>
+            <label>
+              Іздеу
+              <span className="ranking-search">
+                <Search size={16} />
+                <input
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Аты немесе username"
+                />
+              </span>
+            </label>
+          </div>
           <div className="ranking-list">
-            {leaderboard.map((member, index) => (
+            {leaderboard.length > 0 ? leaderboard.map((member, index) => (
               <div className="ranking-row" key={member.id}>
                 <span className="rank-number">{index + 1}</span>
                 <div>
-                  <strong>{member.username}</strong>
+                  <strong>{getDisplayName(member)}</strong>
                   <span>{factionLabels[member.faction]} · {getLeague(member.focus_points)}</span>
+                  <small>{member.username}</small>
                 </div>
                 <strong>{member.focus_points}</strong>
               </div>
-            ))}
+            )) : (
+              <div className="ranking-empty">Сәйкес оқушы табылмады.</div>
+            )}
           </div>
         </div>
 

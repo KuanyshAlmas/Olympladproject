@@ -68,6 +68,63 @@
   gap: 0.55rem;
 }
 
+.ranking-filters {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.8fr) minmax(110px, 0.7fr) minmax(170px, 1.2fr);
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.ranking-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.ranking-filters select,
+.ranking-search {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+}
+
+.ranking-filters select {
+  padding: 0 0.7rem;
+}
+
+.ranking-search {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 0.65rem;
+}
+
+.ranking-search svg {
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+
+.ranking-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--text);
+  font: inherit;
+}
+
+.ranking-search input::placeholder {
+  color: var(--muted);
+}
+
 .ranking-row {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr) auto;
@@ -99,6 +156,22 @@
 .ranking-row span:not(.rank-number) {
   color: var(--muted);
   font-size: 0.82rem;
+}
+
+.ranking-row small {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.ranking-empty {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--muted);
+  font-weight: 800;
+  padding: 0.9rem;
+  text-align: center;
 }
 
 .league-steps {
@@ -198,6 +271,10 @@
 @media (max-width: 860px) {
   .battle-row,
   .progress-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-filters {
     grid-template-columns: 1fr;
   }
 }
