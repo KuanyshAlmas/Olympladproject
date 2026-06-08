@@ -97,7 +97,7 @@ const FloatingAssistant = ({ user }: FloatingAssistantProps) => {
       id: tempUserMessage.id - 1,
       thread: thread.id,
       role: 'assistant',
-      content: 'Gemini ойланып жатыр...',
+      content: 'ИИ ойлануда...',
       created_at: now,
       pending: true,
     };
@@ -119,7 +119,7 @@ const FloatingAssistant = ({ user }: FloatingAssistantProps) => {
         ...current.filter((message) => message.id !== tempUserMessage.id && message.id !== tempAssistantMessage.id),
         savedUserMessage || tempUserMessage,
       ]);
-      setError(getErrorDetail(err) || 'Gemini жауап бере алмады.');
+      setError(getErrorDetail(err) || 'ИИ жауап бере алмады.');
     } finally {
       setSending(false);
     }

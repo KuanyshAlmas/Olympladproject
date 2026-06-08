@@ -13,6 +13,7 @@
 DEBUG=False
 SECRET_KEY=<ұзын random secret>
 DATABASE_URL=${{Postgres.DATABASE_URL}}
+PERPLEXITY_API_KEY=<Perplexity API key>
 TIME_ZONE=Asia/Almaty
 MEDIA_ROOT=/data/media
 ```

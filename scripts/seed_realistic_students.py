@@ -26,32 +26,53 @@ from tasks.roadmap import ROADMAP_TOPICS
 
 
 PASSWORD = 'studentpass'
+DEMO_DAYS_ELAPSED = 15
 
 
 STUDENTS = [
     ('alibek.saken', 'Алибек', 'Сакен', Faction.INFORMATICS, 4.7),
-    ('aruzhan.serik', 'Аружан', 'Серик', Faction.INFORMATICS, 4.5),
+    ('mendeke.ali', 'Мендеке', 'Али', Faction.INFORMATICS, 5.0),
     ('dias.kairat', 'Диас', 'Кайрат', Faction.INFORMATICS, 4.2),
-    ('madina.ermek', 'Мадина', 'Ермек', Faction.INFORMATICS, 4.8),
+    ('amenov.alem', 'Аменов', 'Алем', Faction.INFORMATICS, 5.0),
     ('nursultan.aset', 'Нурсултан', 'Асет', Faction.INFORMATICS, 3.9),
-    ('dana.marat', 'Дана', 'Марат', Faction.INFORMATICS, 4.6),
+    ('zhunusov.temirlan', 'Жунусов', 'Темірлан', Faction.INFORMATICS, 5.0),
     ('sanzhar.bek', 'Санжар', 'Бек', Faction.INFORMATICS, 4.1),
-    ('tomiris.sagat', 'Томирис', 'Сагат', Faction.INFORMATICS, 4.9),
-    ('erasil.talgat', 'Ерасыл', 'Талгат', Faction.INFORMATICS, 3.8),
+    ('dastanuly.magzhan', 'Дастанұлы', 'Мағжан', Faction.INFORMATICS, 5.0),
+    ('maratov.ermek', 'Маратов', 'Ермек', Faction.INFORMATICS, 5.0),
     ('yernar.ali', 'Ернар', 'Али', Faction.INFORMATICS, 4.0),
-    ('ayaulym.bolat', 'Аяулым', 'Болат', Faction.INFORMATICS, 4.4),
+    ('gabrahman.sultan', 'Габрахман', 'Сұлтан', Faction.INFORMATICS, 5.0),
     ('alikhan.oraz', 'Алихан', 'Ораз', Faction.INFORMATICS, 4.3),
-    ('alina.rustem', 'Алина', 'Рустем', Faction.ROBOTICS, 4.6),
+    ('rahan.olzhas', 'Рахан', 'Олжас', Faction.ROBOTICS, 5.0),
     ('beibarys.nur', 'Бейбарыс', 'Нур', Faction.ROBOTICS, 4.1),
-    ('meruert.kai', 'Меруерт', 'Кай', Faction.ROBOTICS, 4.8),
+    ('zhanatov.elzhan', 'Жанатов', 'Елжан', Faction.ROBOTICS, 5.0),
     ('adil.samat', 'Адиль', 'Самат', Faction.ROBOTICS, 3.9),
-    ('zere.murat', 'Зере', 'Мурат', Faction.ROBOTICS, 4.5),
+    ('abenov.sultan', 'Абенов', 'Сұлтан', Faction.ROBOTICS, 5.0),
     ('rayan.askar', 'Раян', 'Аскар', Faction.ROBOTICS, 4.0),
-    ('kamila.arman', 'Камила', 'Арман', Faction.ROBOTICS, 4.7),
-    ('emir.tore', 'Эмир', 'Торе', Faction.ROBOTICS, 3.8),
-    ('aisha.daniyar', 'Аиша', 'Данияр', Faction.ROBOTICS, 4.2),
+    ('abilkaiyr.rauan', 'Әбілқайыр', 'Рауан', Faction.ROBOTICS, 5.0),
+    ('shanshar.zhambyl', 'Шаншар', 'Жамбыл', Faction.ROBOTICS, 5.0),
+    ('musin.ahmet', 'Мусин', 'Ахмет', Faction.ROBOTICS, 5.0),
     ('imanbek.sabit', 'Иманбек', 'Сабит', Faction.ROBOTICS, 4.3),
 ]
+
+
+TOP_STUDENT_USERNAMES = (
+    'mendeke.ali',
+    'amenov.alem',
+    'zhunusov.temirlan',
+    'dastanuly.magzhan',
+    'maratov.ermek',
+    'gabrahman.sultan',
+    'rahan.olzhas',
+    'zhanatov.elzhan',
+    'abenov.sultan',
+    'abilkaiyr.rauan',
+    'musin.ahmet',
+    'shanshar.zhambyl',
+)
+TOP_STUDENT_RANKS = {
+    username: rank
+    for rank, username in enumerate(TOP_STUDENT_USERNAMES, start=1)
+}
 
 
 EVENTS = [
@@ -257,16 +278,17 @@ def ensure_core_accounts():
 
 
 def create_events():
-    now = timezone.now()
+    demo_started_at = timezone.now() - timedelta(days=DEMO_DAYS_ELAPSED)
     events = []
     for title, description, category, starts_in_days, duration_hours, pinned in EVENTS:
+        start_time = demo_started_at + timedelta(days=starts_in_days)
         event, _ = Event.objects.update_or_create(
             title=title,
             defaults={
                 'description': description,
                 'category': category,
-                'start_time': now + timedelta(days=starts_in_days),
-                'end_time': now + timedelta(days=starts_in_days, hours=duration_hours),
+                'start_time': start_time,
+                'end_time': start_time + timedelta(hours=duration_hours),
                 'is_pinned': pinned,
             },
         )
@@ -298,9 +320,12 @@ def create_skills_for_student(user, rng, index):
             faction=user.faction,
             defaults={'description': description},
         )
-        level = [UserSkill.Level.NOT_STARTED, UserSkill.Level.IN_PROGRESS, UserSkill.Level.COMPLETED][
-            (index + rng.randint(0, 2)) % 3
-        ]
+        if user.username in TOP_STUDENT_RANKS:
+            level = UserSkill.Level.COMPLETED
+        else:
+            level = [UserSkill.Level.NOT_STARTED, UserSkill.Level.IN_PROGRESS, UserSkill.Level.COMPLETED][
+                (index + rng.randint(0, 2)) % 3
+            ]
         UserSkill.objects.update_or_create(
             user=user,
             skill=skill,
@@ -315,7 +340,11 @@ def create_tasks_for_student(user, rng, index):
 
     for offset in range(4):
         title, description = source[(index + offset) % len(source)]
-        status_value = statuses[(index + offset) % len(statuses)]
+        status_value = (
+            TaskStatus.DONE
+            if user.username in TOP_STUDENT_RANKS
+            else statuses[(index + offset) % len(statuses)]
+        )
         started_at = None
         if status_value == TaskStatus.IN_PROGRESS:
             started_at = now - timedelta(days=1 + (index % 5))
@@ -339,17 +368,23 @@ def create_tasks_for_student(user, rng, index):
                 f'Что изучить: {", ".join(topic["topics"])}'
             ),
             faction=user.faction,
-            status=TaskStatus.TODO,
+            status=TaskStatus.DONE if user.username in TOP_STUDENT_RANKS else TaskStatus.TODO,
             assigned_to=user,
             deadline=now + timedelta(days=10 + index % 5),
         )
 
 
 def create_codeforces_for_student(user, rng, index):
-    count = 6 if user.faction == Faction.INFORMATICS else 3
+    if user.username in TOP_STUDENT_RANKS:
+        count = 8 if user.faction == Faction.INFORMATICS else 6
+    else:
+        count = 6 if user.faction == Faction.INFORMATICS else 3
+
     for offset in range(count):
         contest_id, problem_index, name, rating, tags = CF_PROBLEMS[(index + offset) % len(CF_PROBLEMS)]
-        if offset < count - 2:
+        if user.username in TOP_STUDENT_RANKS:
+            status_value = CodeforcesSolution.Status.SOLVED
+        elif offset < count - 2:
             status_value = CodeforcesSolution.Status.SOLVED
         elif offset == count - 2:
             status_value = CodeforcesSolution.Status.SOLVING
@@ -379,31 +414,54 @@ def create_codeforces_for_student(user, rng, index):
 def create_pomodoro_for_student(user, rng, index):
     now = timezone.now()
     focus_minutes = 0
-    active_days = 7 + index % 9
-    for day in range(active_days):
-        sessions_today = 1 + ((index + day) % 3 == 0)
-        for session_number in range(sessions_today):
+    top_rank = TOP_STUDENT_RANKS.get(user.username)
+
+    if top_rank:
+        target_focus = 825 - (top_rank * 25)
+        sessions_count = target_focus // 25
+        for session_index in range(sessions_count):
+            day = session_index % DEMO_DAYS_ELAPSED
+            session_number = session_index // DEMO_DAYS_ELAPSED
             started_at = now - timedelta(
                 days=day,
                 hours=17 + session_number,
                 minutes=(index * 7) % 45,
             )
-            duration = 25 if session_number == 0 else 30
             PomodoroSession.objects.create(
                 user=user,
                 mode=PomodoroSession.Mode.FOCUS,
-                duration_minutes=duration,
+                duration_minutes=25,
                 completed=True,
                 started_at=started_at,
-                ended_at=started_at + timedelta(minutes=duration),
+                ended_at=started_at + timedelta(minutes=25),
             )
-            focus_minutes += duration
+            focus_minutes += 25
+    else:
+        active_days = 6 + index % 7
+        for day in range(active_days):
+            sessions_today = 1 + ((index + day) % 5 == 0)
+            for session_number in range(sessions_today):
+                started_at = now - timedelta(
+                    days=day,
+                    hours=17 + session_number,
+                    minutes=(index * 7) % 45,
+                )
+                duration = 25 if session_number == 0 else 30
+                PomodoroSession.objects.create(
+                    user=user,
+                    mode=PomodoroSession.Mode.FOCUS,
+                    duration_minutes=duration,
+                    completed=True,
+                    started_at=started_at,
+                    ended_at=started_at + timedelta(minutes=duration),
+                )
+                focus_minutes += duration
     User.objects.filter(id=user.id).update(focus_points=focus_minutes)
     user.focus_points = focus_minutes
 
 
 def create_standups_for_student(user, rng, index):
-    for day in range(6):
+    for day in range(DEMO_DAYS_ELAPSED):
         report = DailyStandup.objects.create(
             user=user,
             what_done=(

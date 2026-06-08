@@ -147,7 +147,7 @@ const AssistantPage = ({ user }: AssistantPageProps) => {
       id: tempUserMessage.id - 1,
       thread: activeThread.id,
       role: 'assistant',
-      content: 'Gemini ойланып жатыр...',
+      content: 'ИИ ойлануда...',
       created_at: now,
       pending: true,
     };
@@ -170,7 +170,7 @@ const AssistantPage = ({ user }: AssistantPageProps) => {
         ...current.filter((message) => message.id !== tempUserMessage.id && message.id !== tempAssistantMessage.id),
         savedUserMessage || tempUserMessage,
       ]);
-      setError(getErrorDetail(err) || 'Gemini жауап бере алмады.');
+      setError(getErrorDetail(err) || 'ИИ жауап бере алмады.');
     } finally {
       setSending(false);
     }
@@ -186,7 +186,7 @@ const AssistantPage = ({ user }: AssistantPageProps) => {
     <div className="assistant-page">
       <div className="page-title-row">
         <div>
-          <p className="eyebrow">Gemini көмекшісі</p>
+          <p className="eyebrow">Perplexity көмекшісі</p>
           <h2>ИИ ассистент</h2>
         </div>
         <button type="button" className="assistant-new-thread" onClick={createThread}>

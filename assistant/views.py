@@ -8,8 +8,8 @@ from rest_framework.views import APIView
 
 from core.models import UserRole
 from core.permissions import is_platform_admin
-from .gemini import GeminiAssistantError, generate_assistant_reply
 from .models import AssistantMessage, AssistantThread
+from .perplexity import PerplexityAssistantError, generate_assistant_reply
 from .serializers import (
     AssistantMessageCreateSerializer,
     AssistantMessageSerializer,
@@ -96,7 +96,7 @@ class AssistantThreadViewSet(
 
         try:
             reply_text = generate_assistant_reply(thread)
-        except GeminiAssistantError as exc:
+        except PerplexityAssistantError as exc:
             return Response(
                 {
                     'detail': str(exc),
