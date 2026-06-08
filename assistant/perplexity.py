@@ -21,8 +21,10 @@ class PerplexityAPIError(Exception):
 
 
 PERPLEXITY_API_URL = 'https://api.perplexity.ai/v1/sonar'
+DEFAULT_PERPLEXITY_MODEL = 'sonar'
 
 TRANSIENT_STATUS_CODES = {408, 409, 425, 429, 500, 502, 503, 504}
+MODEL_ERROR_STATUS_CODES = {400, 404, 422}
 TRANSIENT_ERROR_MARKERS = (
     'timeout',
     'temporarily unavailable',
@@ -55,14 +57,15 @@ Codeforces - есептер, шарт, код жазу және іске қос�
 def get_model_candidates():
     primary_model = os.environ.get(
         'PERPLEXITY_MODEL',
-        getattr(settings, 'PERPLEXITY_MODEL', 'sonar'),
-    ) or 'sonar'
+        getattr(settings, 'PERPLEXITY_MODEL', DEFAULT_PERPLEXITY_MODEL),
+    ) or DEFAULT_PERPLEXITY_MODEL
     fallback_models = os.environ.get(
         'PERPLEXITY_FALLBACK_MODELS',
-        getattr(settings, 'PERPLEXITY_FALLBACK_MODELS', ''),
+        getattr(settings, 'PERPLEXITY_FALLBACK_MODELS', DEFAULT_PERPLEXITY_MODEL),
     )
     models = [primary_model]
     models.extend(model.strip() for model in str(fallback_models).split(',') if model.strip())
+    models.append(DEFAULT_PERPLEXITY_MODEL)
 
     unique_models = []
     for model in models:
@@ -86,6 +89,10 @@ def is_transient_perplexity_error(exc):
 
     message = str(exc)
     return any(marker in message.lower() for marker in TRANSIENT_ERROR_MARKERS)
+
+
+def is_model_perplexity_error(exc):
+    return getattr(exc, 'status_code', None) in MODEL_ERROR_STATUS_CODES
 
 
 def build_messages(thread):
@@ -117,7 +124,40 @@ def extract_error_detail(body):
         return error.get('message') or error.get('detail') or json.dumps(error, ensure_ascii=False)[:300]
     if isinstance(error, str):
         return error
+    if isinstance(payload.get('message'), str):
+        return payload['message']
+    if isinstance(payload.get('detail'), str):
+        return payload['detail']
     return json.dumps(payload, ensure_ascii=False)[:300]
+
+
+def get_api_key():
+    for key_name in ('PERPLEXITY_API_KEY', 'PPLX_API_KEY', 'PERPLEXITYAI_API_KEY'):
+        api_key = os.environ.get(key_name)
+        if api_key and api_key.strip():
+            return api_key.strip()
+    return ''
+
+
+def format_perplexity_error(exc, model):
+    status_code = getattr(exc, 'status_code', None)
+    detail = str(exc)
+    suffix = f' ({detail})' if detail else ''
+
+    if status_code in {401, 403}:
+        return f'Perplexity API key дұрыс емес немесе API access жоқ. PERPLEXITY_API_KEY мәнін тексеріңіз.{suffix}'
+    if status_code == 402:
+        return f'Perplexity balance/quota жеткіліксіз. API Portal ішінде billing немесе credits тексеріңіз.{suffix}'
+    if status_code == 429:
+        return f'Perplexity rate limit/quota шегіне жетті. Бірнеше минуттан кейін қайталап көріңіз.{suffix}'
+    if status_code in MODEL_ERROR_STATUS_CODES:
+        return (
+            f'Perplexity model/request қатесі. PERPLEXITY_MODEL=sonar қойып көріңіз. '
+            f'Қазіргі model: {model}.{suffix}'
+        )
+    if status_code:
+        return f'Perplexity HTTP {status_code} қатесін қайтарды.{suffix}'
+    return f'Perplexity API-ға қосылу мүмкін болмады.{suffix}'
 
 
 def post_sonar(payload, api_key, api_url, timeout):
@@ -171,7 +211,7 @@ def extract_response_text(response):
 
 
 def generate_assistant_reply(thread):
-    api_key = os.environ.get('PERPLEXITY_API_KEY')
+    api_key = get_api_key()
     if not api_key:
         raise PerplexityAssistantError('ИИ сервисі әлі бапталмаған. PERPLEXITY_API_KEY керек.')
 
@@ -183,6 +223,7 @@ def generate_assistant_reply(thread):
     messages = build_messages(thread)
 
     last_transient_error = None
+    last_model_error = None
     for model in get_model_candidates():
         payload = {
             'model': model,
@@ -200,13 +241,20 @@ def generate_assistant_reply(thread):
             except PerplexityAssistantError:
                 raise
             except Exception as exc:
+                if is_model_perplexity_error(exc):
+                    last_model_error = exc
+                    break
                 if not is_transient_perplexity_error(exc):
-                    raise PerplexityAssistantError(
-                        'Perplexity жауап бере алмады. API key, quota немесе model атауын тексеріңіз.'
-                    ) from exc
+                    raise PerplexityAssistantError(format_perplexity_error(exc, model)) from exc
                 last_transient_error = exc
                 if attempt == 0:
                     time.sleep(0.7)
+
+    if last_model_error:
+        raise PerplexityAssistantError(format_perplexity_error(last_model_error, model)) from last_model_error
+
+    if getattr(last_transient_error, 'status_code', None) == 429:
+        raise PerplexityAssistantError(format_perplexity_error(last_transient_error, model)) from last_transient_error
 
     raise PerplexityAssistantError(
         'Perplexity қазір көп сұранысқа байланысты жауап бере алмай тұр. Бірнеше минуттан кейін қайта көріңіз.'
